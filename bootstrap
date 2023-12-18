@@ -1,0 +1,29 @@
+#/usr/bin/env bash
+
+install_on_ubuntu() {
+	sudo apt update
+	sudo apt install -y ansible
+}
+
+OS="$(uname -s)"
+
+# Install Ansible by platform
+case "${OS}" in
+	Linux*)
+		if [ -f /etc/lsb-release ]; then
+			install_on_ubuntu
+		else
+			echo "Unsupported Linux distro"
+			exit 1
+		fi
+		;;
+	Darwin*)
+		echo "MacOS Not supported yet"
+		;;
+	*)
+		echo "Unsupported operating system: ${OS}"
+		exit 1
+		;;
+esac
+
+ansible-playbook ~/setup.yml --ask-become-pass
