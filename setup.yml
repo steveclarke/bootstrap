@@ -16,7 +16,7 @@
         repo: "ppa:fish-shell/release-3"
         state: present
 
-    - name: Install packages
+    - name: Install Apt packages
       ansible.builtin.apt:
         name:
           - git
@@ -27,6 +27,8 @@
           - build-essential
           - software-properties-common
           - fish
+          - tilix
+          - alacritty
           - xclip
         state: present
 
@@ -34,5 +36,4 @@
       ansible.builtin.user:
         name: "{{ remote_regular_user }}"
         shell: /usr/bin/fish
-
 
