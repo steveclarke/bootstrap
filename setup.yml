@@ -1,0 +1,38 @@
+---
+- name: Machine Bootstrap
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+  vars:
+
+  tasks:
+    - name: Get user
+      ansible.builtin.set_fact:
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
+    - name: Add Fish repository
+      ansible.builtin.apt_repository:
+        repo: "ppa:fish-shell/release-3"
+        state: present
+
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - git
+          - vim
+          - htop
+          - gh
+          - curl
+          - build-essential
+          - software-properties-common
+          - fish
+          - xclip
+        state: present
+
+    - name: Change shell to Fish
+      ansible.builtin.user:
+        name: "{{ remote_regular_user }}"
+        shell: /usr/bin/fish
+
+
